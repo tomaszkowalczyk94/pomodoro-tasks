@@ -1,2 +1,5 @@
 rootProject.name = 'pomodoro-tasks-manager'
 
+include 'core'
+include 'command-line'
+

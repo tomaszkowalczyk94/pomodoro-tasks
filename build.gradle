@@ -5,12 +5,13 @@ plugins {
 group 'org.tomaszkowalczyk94'
 version '1.0-SNAPSHOT'
 
-sourceCompatibility = 1.8
+sourceCompatibility = 1.11
 
-repositories {
-    mavenCentral()
-}
+allprojects {
+    repositories {
+        jcenter()
+    }
 
-dependencies {
-    testCompile group: 'junit', name: 'junit', version: '4.12'
+
+
 }
