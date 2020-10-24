@@ -1,20 +1,28 @@
 package org.tomaszkowalczyk94.core.pomodorotasksmanager.entity;
 
-import lombok.Getter;
-import lombok.Setter;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import java.time.Duration;
 
-@Getter
-@Setter
+@Data
+@NoArgsConstructor
+@AllArgsConstructor
+@Builder
 @Entity
 public class Task {
 
     @Id
     @GeneratedValue(strategy= GenerationType.AUTO)
     private Long id;
-    String name;
+
+    private String name;
+
+    private Duration duration;
 }

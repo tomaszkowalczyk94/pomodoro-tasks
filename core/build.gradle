@@ -6,6 +6,8 @@ plugins {
 group 'org.tomaszkowalczyk94'
 version '1.0-SNAPSHOT'
 
+ext["rest-assured.version"] = "4.0.0"
+
 dependencies {
     compileOnly 'org.projectlombok:lombok:1.18.16'
     annotationProcessor 'org.projectlombok:lombok:1.18.16'
@@ -19,6 +21,7 @@ dependencies {
     testImplementation('org.springframework.boot:spring-boot-starter-test') {
         exclude group: 'org.junit.vintage', module: 'junit-vintage-engine'
     }
+    testImplementation 'io.rest-assured:rest-assured:4.0.0'
 }
 
 test {
