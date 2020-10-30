@@ -1,46 +1,61 @@
 package org.tomaszkowalczyk94.commandline;
 
 
-import org.hexworks.zircon.api.CP437TilesetResources;
-import org.hexworks.zircon.api.ColorThemes;
-import org.hexworks.zircon.api.Components;
-import org.hexworks.zircon.api.SwingApplications;
+import org.hexworks.zircon.api.*;
 import org.hexworks.zircon.api.application.AppConfig;
-import org.hexworks.zircon.api.component.Label;
-import org.hexworks.zircon.api.data.Position;
+import org.hexworks.zircon.api.component.Button;
+import org.hexworks.zircon.api.component.VBox;
 import org.hexworks.zircon.api.data.Size;
+import org.hexworks.zircon.api.graphics.BoxType;
 import org.hexworks.zircon.api.grid.TileGrid;
 import org.hexworks.zircon.api.screen.Screen;
+import org.jetbrains.annotations.NotNull;
+import static org.hexworks.zircon.api.ComponentDecorations.box;
+
+import static org.hexworks.zircon.api.Components.*;
 
 public class Main {
     public static void main(String[] args) {
-        // a TileGrid represents a 2D grid composed of Tiles
-        TileGrid tileGrid = SwingApplications.startTileGrid(
-                AppConfig.newBuilder()
-                        // The number of tiles horizontally, and vertically
-                        .withSize(Size.create(60, 30))
-                        // You can choose from a wide array of CP437, True Type or Graphical tilesets
-                        // which are built into Zircon
-                        .withDefaultTileset(CP437TilesetResources.rexPaint16x16())
-                        .build());
+        TileGrid tileGrid = createTileGrid();
+        Screen taskScreen = createTasksScreen(tileGrid);
+        SwingApplications
+        taskScreen.display();
 
-        // A Screen is an abstraction which lets you use text GUI Components
-        // You can have multiple Screens attached to the same TileGrid to be able to create multiple
-        // screens for your app.
-        Screen screen = Screen.create(tileGrid);
+        taskScreen.setTheme(ColorThemes.afterglow());
+    }
 
-        // Creating text GUI Components is super simple
-        Label label = Components.label()
-                .withText("Hello, Zircon!")
-                .withPosition(Position.create(23, 10))
+    @NotNull
+    private static Screen createTasksScreen(TileGrid tileGrid) {
+        Screen taskScreen = Screen.create(tileGrid);
+
+        VBox column = vbox()
+                .withSize(taskScreen.getSize())
+                .withDecorations(box(BoxType.DOUBLE, "taski"))
                 .build();
 
-        // Screens can hold GUI components
-        screen.addComponent(label);
+        column.addComponent(createTaskButton());
+        column.addComponent(createTaskButton());
+        column.addComponent(createTaskButton());
 
-        screen.display();
+        taskScreen.addComponent(column);
 
-        // Zircon comes with a plethora of built-in color themes
-        screen.setTheme(ColorThemes.afterglow());
+        return taskScreen;
     }
+
+    @NotNull
+    private static TileGrid createTileGrid() {
+        return SwingApplications.startTileGrid(
+                AppConfig.newBuilder()
+                        .withSize(Size.create(60, 30))
+                        .withDefaultTileset(CP437TilesetResources.rexPaint16x16())
+                        .build());
+    }
+
+    private static Button createTaskButton() {
+       return button()
+                .withText("Click me!")
+               .build();
+    }
+
+
 }
