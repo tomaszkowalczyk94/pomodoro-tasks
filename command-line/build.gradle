@@ -7,12 +7,7 @@ group 'org.tomaszkowalczyk94'
 version '1.0-SNAPSHOT'
 
 mainClassName = 'org.tomaszkowalczyk94.commandline.Main'
-repositories {
-    maven { url 'https://jitpack.io' }
-}
 
 dependencies {
     testCompile group: 'junit', name: 'junit', version: '4.12'
-    implementation 'org.hexworks.zircon:zircon.core-jvm:2020.1.6-HOTFIX'
-    implementation 'org.hexworks.zircon:zircon.jvm.swing:2020.1.6-HOTFIX'
 }
