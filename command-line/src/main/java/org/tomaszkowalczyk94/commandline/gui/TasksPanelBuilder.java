@@ -1,4 +1,4 @@
-package org.tomaszkowalczyk94.commandline;
+package org.tomaszkowalczyk94.commandline.gui;
 
 import com.googlecode.lanterna.TerminalSize;
 import com.googlecode.lanterna.gui2.ActionListBox;
@@ -7,14 +7,13 @@ import com.googlecode.lanterna.gui2.WindowBasedTextGUI;
 import com.googlecode.lanterna.gui2.dialogs.ActionListDialog;
 import com.googlecode.lanterna.gui2.dialogs.ActionListDialogBuilder;
 
-public class TasksPanelBuilder {
+class TasksPanelBuilder {
 
     public Panel build(WindowBasedTextGUI textGUI) {
 
         Panel contentPanel = new Panel();
 
-        TerminalSize size = new TerminalSize(14, 10);
-        ActionListBox actionListBox = new ActionListBox(size);
+        ActionListBox actionListBox = new ActionListBox(new TerminalSize(14, 10));
         contentPanel.addComponent(actionListBox);
 
         actionListBox.addItem("test 1", () -> openActionList(textGUI));
@@ -23,11 +22,11 @@ public class TasksPanelBuilder {
         return contentPanel;
     }
 
-    private static void openActionList(WindowBasedTextGUI textGUI) {
+    private void openActionList(WindowBasedTextGUI textGUI) {
         createActionList().showDialog(textGUI);
     }
 
-    private static ActionListDialog createActionList() {
+    private ActionListDialog createActionList() {
         return new ActionListDialogBuilder()
                 .setTitle("Action List Dialog")
                 .setDescription("Choose an item")
