@@ -7,7 +7,7 @@ import java.util.List;
 
 public interface CoreApi {
 
-    @GET("tasks/{user}/repos")
+    @GET("tasks/")
     Call<List<TaskDto>> tasks();
 
 }

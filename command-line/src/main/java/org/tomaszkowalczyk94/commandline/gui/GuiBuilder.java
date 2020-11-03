@@ -12,24 +12,31 @@ import lombok.experimental.FieldDefaults;
 public class GuiBuilder {
 
     @SneakyThrows
-    public GuiRegistry build() {
+    public Gui build() {
 
         DefaultTerminalFactory defaultTerminalFactory = new DefaultTerminalFactory();
-        try (Screen screen = defaultTerminalFactory.createScreen()) {
-            screen.startScreen();
+        Screen screen = defaultTerminalFactory.createScreen(); //NOSONAR
+        screen.startScreen();
 
-            MainElementsRegistry mainElementsRegistry = createMainElements(screen);
-            TasksListRegistry tasksListRegistry = createTasksListElements(mainElementsRegistry);
-            AddTaskFormRegistry addTaskFormRegistry = createAddTaskFormRegistry(mainElementsRegistry);
+        MainElementsRegistry mainElementsRegistry = createMainElements(screen);
+        TasksListRegistry tasksListRegistry = createTasksListElements(mainElementsRegistry);
+        AddTaskFormRegistry addTaskFormRegistry = createAddTaskFormRegistry(mainElementsRegistry);
 
-            mainElementsRegistry.getWindow().waitUntilClosed();
+        ViewsRegistry viewsRegistry = ViewsRegistry.builder()
+                .taskListView(new TaskViewImpl(tasksListRegistry, mainElementsRegistry))
+                .build();
 
-            return GuiRegistry.builder()
-                    .mainElementsRegistry(mainElementsRegistry)
-                    .tasksListRegistry(tasksListRegistry)
-                    .addTaskFormRegistry(addTaskFormRegistry)
-                    .build();
-        }
+        LanternaElementsRegistry lanternaElementsRegistry = LanternaElementsRegistry.builder()
+                .mainElementsRegistry(mainElementsRegistry)
+                .tasksListRegistry(tasksListRegistry)
+                .addTaskFormRegistry(addTaskFormRegistry)
+                .build();
+
+        return GuiImpl.builder()
+                .viewsRegistry(viewsRegistry)
+                .lanternaElementsRegistry(lanternaElementsRegistry)
+                .build();
+
     }
 
     private MainElementsRegistry createMainElements(Screen screen) {
