@@ -29,7 +29,4 @@ class TasksListBuilder implements GuiElementsBuilder<TasksListRegistry> {
                 .actionListBoxOfTasks(actionListBoxOfTasks)
                 .build();
     }
-
-
-
 }
