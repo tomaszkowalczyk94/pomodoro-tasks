@@ -1,14 +1,19 @@
 package org.tomaszkowalczyk94.commandline.gui;
 
+import com.googlecode.lanterna.gui2.Button;
 import com.googlecode.lanterna.gui2.Panel;
+import com.googlecode.lanterna.gui2.TextBox;
 import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
+import lombok.NonNull;
 import lombok.experimental.FieldDefaults;
 
 @Getter
 @Builder
 @FieldDefaults(makeFinal = true, level = AccessLevel.PRIVATE)
 class AddTaskFormRegistry {
-    Panel panel;
+    @NonNull Panel panel;
+    @NonNull TextBox nameTextBox;
+    @NonNull Button addButton;
 }

@@ -14,4 +14,5 @@ import lombok.experimental.FieldDefaults;
 @Getter
 public class ViewsRegistry {
     @NonNull TaskListView taskListView;
+    @NonNull AddTaskFormView addTaskView;
 }
