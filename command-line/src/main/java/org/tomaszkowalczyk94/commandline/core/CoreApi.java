@@ -1,9 +1,7 @@
 package org.tomaszkowalczyk94.commandline.core;
 
 import retrofit2.Call;
-import retrofit2.http.Body;
-import retrofit2.http.GET;
-import retrofit2.http.POST;
+import retrofit2.http.*;
 
 import java.util.List;
 
@@ -14,5 +12,8 @@ public interface CoreApi {
 
     @POST("tasks/")
     Call<TaskDto> createTask(@Body TaskDto taskDto);
+
+    @DELETE("tasks/{id}")
+    Call<Void> removeTask(@Path("id") long id);
 
 }

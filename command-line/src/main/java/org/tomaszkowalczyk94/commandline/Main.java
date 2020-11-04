@@ -18,6 +18,7 @@ public class Main {
         ViewsRegistry viewsRegistry = gui.getViewsRegistry();
 
         TasksListController tasksListController = new TasksListController(coreApi, viewsRegistry.getTaskListView());
+        tasksListController.init();
 
         AddTaskFormController addTaskFormController = new AddTaskFormController(
                 tasksListController,

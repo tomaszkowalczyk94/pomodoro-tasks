@@ -2,26 +2,30 @@ package org.tomaszkowalczyk94.commandline.gui;
 
 import com.googlecode.lanterna.gui2.WindowBasedTextGUI;
 import com.googlecode.lanterna.gui2.dialogs.ActionListDialog;
-import com.googlecode.lanterna.gui2.dialogs.ActionListDialogBuilder;
 import lombok.AccessLevel;
-import lombok.AllArgsConstructor;
+import lombok.RequiredArgsConstructor;
 import lombok.SneakyThrows;
 import lombok.experimental.FieldDefaults;
 import org.tomaszkowalczyk94.commandline.core.TaskDto;
 
-@AllArgsConstructor
-@FieldDefaults(makeFinal = true, level = AccessLevel.PRIVATE)
+import java.util.Objects;
+import java.util.function.Consumer;
+
+@RequiredArgsConstructor
+@FieldDefaults(level = AccessLevel.PRIVATE)
 class TaskListViewImpl implements TaskListView {
 
-    TasksListRegistry tasksListRegistry;
-    MainElementsRegistry mainElementsRegistry;
+    final TasksListRegistry tasksListRegistry;
+    final MainElementsRegistry mainElementsRegistry;
+
+    Consumer<TaskDto> onRemoveAction;
 
     @Override
     @SneakyThrows
     public void addTask(TaskDto taskDto) {
         tasksListRegistry
                 .getActionListBoxOfTasks()
-                .addItem(taskDto.getName(), () -> openActionList(mainElementsRegistry.getTextGui()));
+                .addItem(taskDto.getName(), () -> openActionList(mainElementsRegistry.getTextGui(), taskDto));
 
         mainElementsRegistry.getScreen().refresh();
     }
@@ -36,24 +40,20 @@ class TaskListViewImpl implements TaskListView {
         mainElementsRegistry.getScreen().refresh();
     }
 
-
-    private void openActionList(WindowBasedTextGUI textGUI) {
-        createActionList().showDialog(textGUI);
+    @Override
+    public void setOnRemoveAction(Consumer<TaskDto> onRemoveAction) {
+        this.onRemoveAction = onRemoveAction;
     }
 
-    private ActionListDialog createActionList() {
-        return new ActionListDialogBuilder()
-                .setTitle("Action List Dialog")
-                .setDescription("Choose an item")
-                .addAction("First Item", () -> {
-                    // Do 1st thing...
-                })
-                .addAction("Second Item", () -> {
-                    // Do 2nd thing...
-                })
-                .addAction("Third Item", () -> {
-                    // Do 3rd thing...
-                })
-                .build();
+    private void openActionList(WindowBasedTextGUI textGUI, TaskDto taskDto) {
+        Objects.requireNonNull(onRemoveAction);
+
+        ActionListDialog actionListDialog = new TaskActionListBuilder(
+                () -> onRemoveAction.accept(taskDto)
+        ).build();
+
+        actionListDialog.showDialog(textGUI);
     }
+
+
 }

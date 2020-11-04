@@ -1,7 +1,7 @@
 package org.tomaszkowalczyk94.commandline.controller;
 
 import lombok.AccessLevel;
-import lombok.AllArgsConstructor;
+import lombok.RequiredArgsConstructor;
 import lombok.SneakyThrows;
 import lombok.experimental.FieldDefaults;
 import org.tomaszkowalczyk94.commandline.core.CoreApi;
@@ -12,12 +12,16 @@ import retrofit2.Response;
 import java.util.List;
 import java.util.Objects;
 
-@AllArgsConstructor
-@FieldDefaults(makeFinal = true, level = AccessLevel.PRIVATE)
+@RequiredArgsConstructor
+@FieldDefaults(level = AccessLevel.PRIVATE)
 public class TasksListController {
 
-    CoreApi coreApi;
-    TaskListView taskListView;
+    final CoreApi coreApi;
+    final TaskListView taskListView;
+
+    public void init() {
+        taskListView.setOnRemoveAction(this::removeTask);
+    }
 
     @SneakyThrows
     public void reloadTasksList() {
@@ -34,4 +38,14 @@ public class TasksListController {
         }
     }
 
+    @SneakyThrows
+    public void removeTask(TaskDto taskDto) {
+        Response<Void> response = coreApi.removeTask(taskDto.getId()).execute();
+
+        if (response.isSuccessful()) {
+            reloadTasksList();
+        } else {
+            throw new ResponseNotSuccessfulException();
+        }
+    }
 }
