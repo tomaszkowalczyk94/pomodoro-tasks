@@ -1,5 +1,6 @@
 package org.tomaszkowalczyk94.commandline;
 
+import org.tomaszkowalczyk94.commandline.controller.AddTaskFormController;
 import org.tomaszkowalczyk94.commandline.controller.TasksListController;
 import org.tomaszkowalczyk94.commandline.core.CoreApi;
 import org.tomaszkowalczyk94.commandline.core.CoreApiFactory;
@@ -14,9 +15,18 @@ public class Main {
         Gui gui = new GuiBuilder()
                 .build();
 
-
         ViewsRegistry viewsRegistry = gui.getViewsRegistry();
+
         TasksListController tasksListController = new TasksListController(coreApi, viewsRegistry.getTaskListView());
+
+        AddTaskFormController addTaskFormController = new AddTaskFormController(
+                tasksListController,
+                coreApi,
+                viewsRegistry.getAddTaskView()
+        );
+        
+        addTaskFormController.init();
+
         tasksListController.reloadTasksList();
 
         gui.waitForExit();

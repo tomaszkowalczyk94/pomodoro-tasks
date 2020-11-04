@@ -17,15 +17,11 @@ class AddTaskFormBuilder implements GuiElementsBuilder<AddTaskFormRegistry> {
         panel.setLayoutManager(new GridLayout(2));
 
         panel.addComponent(new Label("name:"));
-        panel.addComponent(new TextBox());
+        TextBox nameTextBox = new TextBox();
+        panel.addComponent(nameTextBox);
 
-        panel.addComponent(new Label("test val 2:"));
-        panel.addComponent(new TextBox());
-
-        panel.addComponent(new Label("test val 3:"));
-        panel.addComponent(new TextBox());
-
-        panel.addComponent(new Button("Dodaj taska"));
+        Button addButton = new Button("Add task");
+        panel.addComponent(addButton);
 
         mainElementsRegistry
                 .getMainPanel()
@@ -33,6 +29,8 @@ class AddTaskFormBuilder implements GuiElementsBuilder<AddTaskFormRegistry> {
 
         return AddTaskFormRegistry.builder()
                 .panel(panel)
+                .nameTextBox(nameTextBox)
+                .addButton(addButton)
                 .build();
     }
 }

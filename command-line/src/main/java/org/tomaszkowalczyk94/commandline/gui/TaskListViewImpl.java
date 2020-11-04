@@ -11,11 +11,12 @@ import org.tomaszkowalczyk94.commandline.core.TaskDto;
 
 @AllArgsConstructor
 @FieldDefaults(makeFinal = true, level = AccessLevel.PRIVATE)
-class TaskViewImpl implements TaskListView {
+class TaskListViewImpl implements TaskListView {
 
     TasksListRegistry tasksListRegistry;
     MainElementsRegistry mainElementsRegistry;
 
+    @Override
     @SneakyThrows
     public void addTask(TaskDto taskDto) {
         tasksListRegistry
@@ -24,6 +25,17 @@ class TaskViewImpl implements TaskListView {
 
         mainElementsRegistry.getScreen().refresh();
     }
+
+    @Override
+    @SneakyThrows
+    public void removeAll() {
+        tasksListRegistry
+                .getActionListBoxOfTasks()
+                .clearItems();
+
+        mainElementsRegistry.getScreen().refresh();
+    }
+
 
     private void openActionList(WindowBasedTextGUI textGUI) {
         createActionList().showDialog(textGUI);

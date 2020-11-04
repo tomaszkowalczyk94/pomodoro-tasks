@@ -23,7 +23,8 @@ public class GuiBuilder {
         AddTaskFormRegistry addTaskFormRegistry = createAddTaskFormRegistry(mainElementsRegistry);
 
         ViewsRegistry viewsRegistry = ViewsRegistry.builder()
-                .taskListView(new TaskViewImpl(tasksListRegistry, mainElementsRegistry))
+                .taskListView(new TaskListViewImpl(tasksListRegistry, mainElementsRegistry))
+                .addTaskView(new AddTaskFormViewImpl(addTaskFormRegistry))
                 .build();
 
         LanternaElementsRegistry lanternaElementsRegistry = LanternaElementsRegistry.builder()

@@ -6,32 +6,32 @@ import lombok.SneakyThrows;
 import lombok.experimental.FieldDefaults;
 import org.tomaszkowalczyk94.commandline.core.CoreApi;
 import org.tomaszkowalczyk94.commandline.core.TaskDto;
-import org.tomaszkowalczyk94.commandline.gui.TaskListView;
+import org.tomaszkowalczyk94.commandline.gui.AddTaskFormView;
 import retrofit2.Response;
-
-import java.util.List;
-import java.util.Objects;
 
 @AllArgsConstructor
 @FieldDefaults(makeFinal = true, level = AccessLevel.PRIVATE)
-public class TasksListController {
+public class AddTaskFormController {
+
+    TasksListController tasksListController;
 
     CoreApi coreApi;
-    TaskListView taskListView;
+    AddTaskFormView addTaskFormView;
+
+    public void init() {
+        addTaskFormView.addTaskButtonEvent(this::addTask);
+    }
 
     @SneakyThrows
-    public void reloadTasksList() {
+    private void addTask() {
+        TaskDto taskFromForm = addTaskFormView.getTaskFromForm();
 
-        Response<List<TaskDto>> response = coreApi.tasks().execute();
+        Response<TaskDto> response = coreApi.createTask(taskFromForm).execute();
 
         if (response.isSuccessful()) {
-            taskListView.removeAll();
-            Objects.requireNonNull(response.body())
-                    .forEach(taskListView::addTask);
-
+            tasksListController.reloadTasksList();
         } else {
             throw new ResponseNotSuccessfulException();
         }
     }
-
 }
