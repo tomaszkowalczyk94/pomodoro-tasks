@@ -1,25 +1,28 @@
 package org.tomaszkowalczyk94.commandline.gui;
 
-import com.googlecode.lanterna.TerminalSize;
-import com.googlecode.lanterna.gui2.ActionListBox;
-import com.googlecode.lanterna.gui2.Panel;
 import com.googlecode.lanterna.gui2.WindowBasedTextGUI;
 import com.googlecode.lanterna.gui2.dialogs.ActionListDialog;
 import com.googlecode.lanterna.gui2.dialogs.ActionListDialogBuilder;
+import lombok.AccessLevel;
+import lombok.AllArgsConstructor;
+import lombok.SneakyThrows;
+import lombok.experimental.FieldDefaults;
+import org.tomaszkowalczyk94.commandline.core.TaskDto;
 
-class TasksPanelBuilder {
+@AllArgsConstructor
+@FieldDefaults(makeFinal = true, level = AccessLevel.PRIVATE)
+class TaskViewImpl implements TaskListView {
 
-    public Panel build(WindowBasedTextGUI textGUI) {
+    TasksListRegistry tasksListRegistry;
+    MainElementsRegistry mainElementsRegistry;
 
-        Panel contentPanel = new Panel();
+    @SneakyThrows
+    public void addTask(TaskDto taskDto) {
+        tasksListRegistry
+                .getActionListBoxOfTasks()
+                .addItem(taskDto.getName(), () -> openActionList(mainElementsRegistry.getTextGui()));
 
-        ActionListBox actionListBox = new ActionListBox(new TerminalSize(14, 10));
-        contentPanel.addComponent(actionListBox);
-
-        actionListBox.addItem("test 1", () -> openActionList(textGUI));
-        actionListBox.addItem("test 2", () -> openActionList(textGUI));
-
-        return contentPanel;
+        mainElementsRegistry.getScreen().refresh();
     }
 
     private void openActionList(WindowBasedTextGUI textGUI) {
@@ -41,5 +44,4 @@ class TasksPanelBuilder {
                 })
                 .build();
     }
-
 }
