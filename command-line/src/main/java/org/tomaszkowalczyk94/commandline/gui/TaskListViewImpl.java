@@ -6,6 +6,7 @@ import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.SneakyThrows;
 import lombok.experimental.FieldDefaults;
+import org.apache.commons.lang3.StringUtils;
 import org.tomaszkowalczyk94.commandline.core.TaskDto;
 
 import java.util.Objects;
@@ -17,6 +18,7 @@ class TaskListViewImpl implements TaskListView {
 
     final TasksListRegistry tasksListRegistry;
     final MainElementsRegistry mainElementsRegistry;
+    private static final int TASK_NAME_LENGTH = 15;
 
     Consumer<TaskDto> onRemoveAction;
 
@@ -25,7 +27,7 @@ class TaskListViewImpl implements TaskListView {
     public void addTask(TaskDto taskDto) {
         tasksListRegistry
                 .getActionListBoxOfTasks()
-                .addItem(taskDto.getName(), () -> openActionList(mainElementsRegistry.getTextGui(), taskDto));
+                .addItem(buildNameOfTask(taskDto), () -> openActionList(mainElementsRegistry.getTextGui(), taskDto));
 
         mainElementsRegistry.getScreen().refresh();
     }
@@ -53,6 +55,11 @@ class TaskListViewImpl implements TaskListView {
         ).build();
 
         actionListDialog.showDialog(textGUI);
+    }
+
+    private String buildNameOfTask(TaskDto taskDto) {
+        String taskNameWithSpaces = StringUtils.rightPad(taskDto.getName(), TASK_NAME_LENGTH);
+        return String.format("%s %d min", taskNameWithSpaces, taskDto.getDuration().toMinutes());
     }
 
 
