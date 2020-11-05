@@ -15,5 +15,6 @@ import lombok.experimental.FieldDefaults;
 class AddTaskFormRegistry {
     @NonNull Panel panel;
     @NonNull TextBox nameTextBox;
+    @NonNull TextBox minutesTextBox;
     @NonNull Button addButton;
 }

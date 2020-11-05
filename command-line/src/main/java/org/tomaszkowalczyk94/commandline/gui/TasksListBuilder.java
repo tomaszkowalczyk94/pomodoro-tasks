@@ -13,11 +13,13 @@ import lombok.experimental.FieldDefaults;
 class TasksListBuilder implements GuiElementsBuilder<TasksListRegistry> {
 
     MainElementsRegistry mainElementsRegistry;
+    private static final int LIST_WIDTH = 24;
+    private static final int LIST_HEIGHT = 10;
 
     public TasksListRegistry build() {
         Panel panel = new Panel();
 
-        ActionListBox actionListBoxOfTasks = new ActionListBox(new TerminalSize(14, 10));
+        ActionListBox actionListBoxOfTasks = new ActionListBox(new TerminalSize(LIST_WIDTH, LIST_HEIGHT));
         panel.addComponent(actionListBoxOfTasks);
 
         mainElementsRegistry

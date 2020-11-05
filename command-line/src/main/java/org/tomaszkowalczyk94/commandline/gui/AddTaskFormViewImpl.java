@@ -6,6 +6,8 @@ import lombok.AllArgsConstructor;
 import lombok.experimental.FieldDefaults;
 import org.tomaszkowalczyk94.commandline.core.TaskDto;
 
+import java.time.Duration;
+
 @AllArgsConstructor
 @FieldDefaults(makeFinal = true, level = AccessLevel.PRIVATE)
 class AddTaskFormViewImpl implements AddTaskFormView {
@@ -20,6 +22,7 @@ class AddTaskFormViewImpl implements AddTaskFormView {
     public TaskDto getTaskFromForm() {
         return TaskDto.builder()
                 .name(addTaskFormRegistry.getNameTextBox().getText())
+                .duration(Duration.ofMinutes(Long.parseLong(addTaskFormRegistry.getMinutesTextBox().getText())))
                 .build();
     }
 }

@@ -5,6 +5,8 @@ import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.experimental.FieldDefaults;
 
+import java.util.regex.Pattern;
+
 @AllArgsConstructor
 @FieldDefaults(makeFinal = true, level = AccessLevel.PRIVATE)
 class AddTaskFormBuilder implements GuiElementsBuilder<AddTaskFormRegistry> {
@@ -20,6 +22,10 @@ class AddTaskFormBuilder implements GuiElementsBuilder<AddTaskFormRegistry> {
         TextBox nameTextBox = new TextBox();
         panel.addComponent(nameTextBox);
 
+        panel.addComponent(new Label("minutes:"));
+        TextBox minutesTextBox = new TextBox().setValidationPattern(Pattern.compile("[0-9]*"));
+        panel.addComponent(minutesTextBox);
+
         Button addButton = new Button("Add task");
         panel.addComponent(addButton);
 
@@ -30,6 +36,7 @@ class AddTaskFormBuilder implements GuiElementsBuilder<AddTaskFormRegistry> {
         return AddTaskFormRegistry.builder()
                 .panel(panel)
                 .nameTextBox(nameTextBox)
+                .minutesTextBox(minutesTextBox)
                 .addButton(addButton)
                 .build();
     }
