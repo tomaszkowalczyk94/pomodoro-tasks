@@ -6,7 +6,10 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.web.server.LocalServerPort;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.tomaszkowalczyk94.core.pomodorotasksmanager.entity.Task;
+import org.tomaszkowalczyk94.core.pomodorotasksmanager.model.TaskDto;
 
+
+import java.util.Collections;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.springframework.boot.test.context.SpringBootTest.WebEnvironment.RANDOM_PORT;
@@ -25,10 +28,10 @@ class TaskControllerIT {
         //given
         var spec = RestUtil.buildRequestSpecification(port);
 
-        Task dummyTask = createDummyTask();
+        TaskDto dummyTask = createDummyTask();
 
         //when
-        Task resource = createAndGetResource(spec, "/tasks", dummyTask, Task.class);
+        TaskDto resource = createAndGetResource(spec, "/tasks", dummyTask, TaskDto.class);
 
         //then
         assertThat(resource).isEqualToIgnoringGivenFields(dummyTask, "id");
@@ -38,8 +41,8 @@ class TaskControllerIT {
     void getEntryTest() {
         //given
         var spec = RestUtil.buildRequestSpecification(port);
-        Task dummyTask = createDummyTask();
-        Task createdTask = createAndGetResource(spec, "/tasks", dummyTask, Task.class);
+        TaskDto dummyTask = createDummyTask();
+        TaskDto createdTask = createAndGetResource(spec, "/tasks", dummyTask, TaskDto.class);
 
         //when
         Task task = getResource(spec, "/tasks/" + createdTask.getId(), Task.class);
@@ -48,9 +51,10 @@ class TaskControllerIT {
         assertThat(task).isEqualToIgnoringGivenFields(createdTask, "id");
     }
 
-    private Task createDummyTask() {
-        return Task.builder()
+    private TaskDto createDummyTask() {
+        return TaskDto.builder()
                 .name("testName")
+                .doneTaskInfo(Collections.emptySet())
                 .build();
     }
 }

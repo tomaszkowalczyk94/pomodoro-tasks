@@ -6,26 +6,22 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
-import java.time.Duration;
-import java.util.Set;
+import java.time.LocalDate;
 
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
 @Entity
-public class Task {
+public class DoneTaskData {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy= GenerationType.AUTO)
     private Long id;
 
-    @OneToMany
-    private Set<DoneTaskData> doneTaskInfo;
+    @ManyToOne
+    private Task task;
 
-    private String name;
+    private LocalDate done;
 
-    private Duration duration;
-
-    private int quantity;
 }
