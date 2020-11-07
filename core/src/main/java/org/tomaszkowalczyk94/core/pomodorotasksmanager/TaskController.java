@@ -3,11 +3,16 @@ package org.tomaszkowalczyk94.core.pomodorotasksmanager;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.experimental.FieldDefaults;
+import org.modelmapper.ModelMapper;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
 import org.tomaszkowalczyk94.core.pomodorotasksmanager.entity.Task;
+import org.tomaszkowalczyk94.core.pomodorotasksmanager.model.TaskDto;
 import org.tomaszkowalczyk94.core.pomodorotasksmanager.repository.TaskRepository;
+
+import java.util.stream.Collectors;
+import java.util.stream.StreamSupport;
 
 @FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
 @AllArgsConstructor
@@ -16,9 +21,14 @@ import org.tomaszkowalczyk94.core.pomodorotasksmanager.repository.TaskRepository
 public class TaskController {
     TaskRepository taskRepository;
 
+    ModelMapper modelMapper;
+
     @GetMapping
-    public Iterable<Task> all() {
-        return taskRepository.findAll();
+    public Iterable<TaskDto> all() {
+        return StreamSupport.stream(taskRepository.findAll().spliterator(), false)
+                .map(task -> modelMapper.map(task, TaskDto.class))
+                .collect(Collectors.toSet());
+
     }
 
     @GetMapping("{id}")
@@ -28,19 +38,22 @@ public class TaskController {
     }
 
     @PostMapping
-    public Task newEntry(@RequestBody Task task) {
-        return taskRepository.save(task);
+    public TaskDto newEntry(@RequestBody TaskDto taskDto) {
+        Task task = modelMapper.map(taskDto, Task.class);
+        return modelMapper.map(taskRepository.save(task), TaskDto.class);
     }
 
     @PutMapping("{id}")
-    public Task replace(@RequestBody Task newTask, @PathVariable Long id) {
+    public TaskDto replace(@RequestBody TaskDto newTaskDto, @PathVariable Long id) {
+        Task task = modelMapper.map(newTaskDto, Task.class);
 
-        return taskRepository.findById(id)
+        Task modifiedTask = taskRepository.findById(id)
                 .map(taskRepository::save)
                 .orElseGet(() -> {
-                    newTask.setId(id);
-                    return taskRepository.save(newTask);
+                    newTaskDto.setId(id);
+                    return taskRepository.save(task);
                 });
+        return modelMapper.map(modifiedTask, TaskDto.class);
     }
 
     @DeleteMapping("{id}")

@@ -13,14 +13,14 @@ import java.time.LocalDate;
 @AllArgsConstructor
 @Builder
 @Entity
-public class DoneTask {
+public class DoneTaskData {
 
     @Id
     @GeneratedValue(strategy= GenerationType.AUTO)
     private Long id;
 
     @ManyToOne
-    private Task department;
+    private Task task;
 
     private LocalDate done;
 
