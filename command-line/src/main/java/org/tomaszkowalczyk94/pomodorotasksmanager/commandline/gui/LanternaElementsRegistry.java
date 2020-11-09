@@ -13,4 +13,5 @@ class LanternaElementsRegistry {
     @NonNull MainElementsRegistry mainElementsRegistry;
     @NonNull TasksListRegistry tasksListRegistry;
     @NonNull AddTaskFormRegistry addTaskFormRegistry;
+    @NonNull TaskProgressElementsRegistry taskProgressElementsRegistry;
 }

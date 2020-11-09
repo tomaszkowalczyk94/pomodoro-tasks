@@ -1,7 +1,7 @@
 package org.tomaszkowalczyk94.pomodorotasksmanager.commandline.gui;
 
-import com.googlecode.lanterna.screen.Screen;
 import com.googlecode.lanterna.terminal.DefaultTerminalFactory;
+import com.googlecode.lanterna.terminal.Terminal;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.SneakyThrows;
@@ -15,33 +15,39 @@ public class GuiBuilder {
     public Gui build() {
 
         DefaultTerminalFactory defaultTerminalFactory = new DefaultTerminalFactory();
-        Screen screen = defaultTerminalFactory.createScreen(); //NOSONAR
-        screen.startScreen();
 
-        MainElementsRegistry mainElementsRegistry = createMainElements(screen);
+        Terminal terminal = defaultTerminalFactory.createTerminal();
+
+        MainElementsRegistry mainElementsRegistry = createMainElements(terminal);
         TasksListRegistry tasksListRegistry = createTasksListElements(mainElementsRegistry);
         AddTaskFormRegistry addTaskFormRegistry = createAddTaskFormRegistry(mainElementsRegistry);
+        TaskProgressElementsRegistry taskProgressElementsRegistry = createTaskProgressElementsRegistry();
 
         ViewsRegistry viewsRegistry = ViewsRegistry.builder()
                 .taskListView(new TaskListViewImpl(tasksListRegistry, mainElementsRegistry))
                 .addTaskView(new AddTaskFormViewImpl(addTaskFormRegistry))
+                .taskProgressView(new TaskProgressViewImpl(mainElementsRegistry, taskProgressElementsRegistry))
                 .build();
 
         LanternaElementsRegistry lanternaElementsRegistry = LanternaElementsRegistry.builder()
                 .mainElementsRegistry(mainElementsRegistry)
                 .tasksListRegistry(tasksListRegistry)
                 .addTaskFormRegistry(addTaskFormRegistry)
+                .taskProgressElementsRegistry(taskProgressElementsRegistry)
                 .build();
 
         return GuiImpl.builder()
                 .viewsRegistry(viewsRegistry)
                 .lanternaElementsRegistry(lanternaElementsRegistry)
                 .build();
-
     }
 
-    private MainElementsRegistry createMainElements(Screen screen) {
-        return new MainElementsBuilder(screen).build();
+    private TaskProgressElementsRegistry createTaskProgressElementsRegistry() {
+        return new TaskProgressElementsBuilder().build();
+    }
+
+    private MainElementsRegistry createMainElements(Terminal terminal) {
+        return new MainElementsBuilder(terminal).build();
     }
 
     private TasksListRegistry createTasksListElements(MainElementsRegistry mainElementsRegistry) {

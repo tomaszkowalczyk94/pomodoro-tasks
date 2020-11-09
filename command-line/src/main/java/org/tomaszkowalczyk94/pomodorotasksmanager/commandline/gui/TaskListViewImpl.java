@@ -21,6 +21,7 @@ class TaskListViewImpl implements TaskListView {
     private static final int TASK_NAME_LENGTH = 15;
 
     Consumer<TaskDto> onRemoveAction;
+    Consumer<TaskDto> onStartTaskAction;
 
     @Override
     @SneakyThrows
@@ -47,11 +48,17 @@ class TaskListViewImpl implements TaskListView {
         this.onRemoveAction = onRemoveAction;
     }
 
+    @Override
+    public void setOnStartTaskAction(Consumer<TaskDto> onStartTaskAction) {
+        this.onStartTaskAction = onStartTaskAction;
+    }
+
     private void openActionList(WindowBasedTextGUI textGUI, TaskDto taskDto) {
         Objects.requireNonNull(onRemoveAction);
 
         ActionListDialog actionListDialog = new TaskActionListBuilder(
-                () -> onRemoveAction.accept(taskDto)
+                () -> onRemoveAction.accept(taskDto),
+                () -> onStartTaskAction.accept(taskDto)
         ).build();
 
         actionListDialog.showDialog(textGUI);

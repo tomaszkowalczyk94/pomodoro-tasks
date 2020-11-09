@@ -1,10 +1,8 @@
 package org.tomaszkowalczyk94.pomodorotasksmanager.commandline.gui;
 
-import com.googlecode.lanterna.gui2.Panel;
+import com.googlecode.lanterna.gui2.Button;
+import com.googlecode.lanterna.gui2.Label;
 import com.googlecode.lanterna.gui2.Window;
-import com.googlecode.lanterna.gui2.WindowBasedTextGUI;
-import com.googlecode.lanterna.screen.Screen;
-import com.googlecode.lanterna.terminal.Terminal;
 import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
@@ -13,10 +11,9 @@ import lombok.experimental.FieldDefaults;
 @Getter
 @Builder
 @FieldDefaults(makeFinal = true, level = AccessLevel.PRIVATE)
-class MainElementsRegistry {
-    Terminal terminal;
-    Screen screen;
-    WindowBasedTextGUI textGui;
+public class TaskProgressElementsRegistry {
     Window window;
-    Panel mainPanel;
+    Label taskNameLabel;
+    Label timeLabel;
+    Button stopButton;
 }

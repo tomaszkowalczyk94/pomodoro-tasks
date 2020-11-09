@@ -11,11 +11,13 @@ import lombok.experimental.FieldDefaults;
 public class TaskActionListBuilder implements GuiElementsBuilder<ActionListDialog>  {
 
     Runnable onRemove;
+    Runnable onStartTask;
 
     @Override
     public ActionListDialog build() {
         return new ActionListDialogBuilder()
                 .setTitle("Actions")
+                .addAction("Start", onStartTask)
                 .addAction("Remove", onRemove)
                 .build();
     }

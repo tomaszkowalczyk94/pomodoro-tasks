@@ -18,10 +18,13 @@ public class TasksListController {
 
     final CoreApi coreApi;
     final TaskListView taskListView;
+    final TaskProgressController taskProgressController;
 
     public void init() {
         taskListView.setOnRemoveAction(this::removeTask);
+        taskListView.setOnStartTaskAction(this::startTask);
     }
+
 
     @SneakyThrows
     public void reloadTasksList() {
@@ -48,4 +51,9 @@ public class TasksListController {
             throw new ResponseNotSuccessfulException();
         }
     }
+
+    public void startTask(TaskDto taskDto) {
+        taskProgressController.start(taskDto);
+    }
+
 }
