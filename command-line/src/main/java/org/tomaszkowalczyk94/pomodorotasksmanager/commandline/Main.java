@@ -1,6 +1,7 @@
 package org.tomaszkowalczyk94.pomodorotasksmanager.commandline;
 
 import org.tomaszkowalczyk94.pomodorotasksmanager.commandline.controller.AddTaskFormController;
+import org.tomaszkowalczyk94.pomodorotasksmanager.commandline.controller.TaskProgressController;
 import org.tomaszkowalczyk94.pomodorotasksmanager.commandline.controller.TasksListController;
 import org.tomaszkowalczyk94.pomodorotasksmanager.commandline.core.CoreApi;
 import org.tomaszkowalczyk94.pomodorotasksmanager.commandline.core.CoreApiFactory;
@@ -17,7 +18,14 @@ public class Main {
 
         ViewsRegistry viewsRegistry = gui.getViewsRegistry();
 
-        TasksListController tasksListController = new TasksListController(coreApi, viewsRegistry.getTaskListView());
+        TaskProgressController taskProgressController = new TaskProgressController(viewsRegistry.getTaskProgressView());
+        taskProgressController.init();
+
+        TasksListController tasksListController = new TasksListController(
+                coreApi,
+                viewsRegistry.getTaskListView(),
+                taskProgressController
+        );
         tasksListController.init();
 
         AddTaskFormController addTaskFormController = new AddTaskFormController(
@@ -25,7 +33,6 @@ public class Main {
                 coreApi,
                 viewsRegistry.getAddTaskView()
         );
-        
         addTaskFormController.init();
 
         tasksListController.reloadTasksList();

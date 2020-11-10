@@ -13,4 +13,5 @@ public interface TaskListView {
     void removeAll();
     void addTask(TaskDto taskDto);
     void setOnRemoveAction(Consumer<TaskDto> onRemoveAction);
+    void setOnStartTaskAction(Consumer<TaskDto> onStartTaskAction);
 }
