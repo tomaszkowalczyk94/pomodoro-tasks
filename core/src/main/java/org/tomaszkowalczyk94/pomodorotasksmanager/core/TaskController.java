@@ -32,8 +32,9 @@ public class TaskController {
     }
 
     @GetMapping("{id}")
-    public Task byId(@PathVariable Long id) {
+    public TaskDto byId(@PathVariable Long id) {
         return taskRepository.findById(id)
+                .map(task -> modelMapper.map(task, TaskDto.class))
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
     }
 
