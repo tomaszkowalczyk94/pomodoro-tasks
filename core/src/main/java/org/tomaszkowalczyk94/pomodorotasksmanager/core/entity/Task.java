@@ -23,6 +23,12 @@ public class Task {
     @OneToMany
     private Set<DoneTaskData> doneTaskInfo;
 
+    @OneToMany
+    private Set<ScheduledTaskData> scheduledTaskData;
+
+    @OneToMany
+    private Set<TaskDateTime> taskDateTimes;
+
     private String name;
 
     private Duration duration;

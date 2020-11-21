@@ -45,7 +45,7 @@ class TaskControllerIT {
         TaskDto createdTask = createAndGetResource(spec, "/tasks", dummyTask, TaskDto.class);
 
         //when
-        Task task = getResource(spec, "/tasks/" + createdTask.getId(), Task.class);
+        TaskDto task = getResource(spec, "/tasks/" + createdTask.getId(), TaskDto.class);
 
         //then
         assertThat(task).isEqualToIgnoringGivenFields(createdTask, "id");
