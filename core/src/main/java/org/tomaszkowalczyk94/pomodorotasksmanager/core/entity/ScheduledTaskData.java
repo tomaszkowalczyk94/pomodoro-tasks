@@ -9,7 +9,7 @@ import javax.persistence.*;
 
 /**
  * Format like in cron tasks. https://en.wikipedia.org/wiki/Cron
- * for example, hour can have value "*", or number from 0 to 23,
+ * for example, dayOfTheMonth can have value "*", or number from 0 to 31, or group of numbers,
  */
 @Data
 @NoArgsConstructor
@@ -25,9 +25,6 @@ public class ScheduledTaskData {
     @ManyToOne
     private Task task;
 
-
-    String minute;
-    String hour;
     String dayOfTheMonth;
     String month;
     String dayOfTheWeek;

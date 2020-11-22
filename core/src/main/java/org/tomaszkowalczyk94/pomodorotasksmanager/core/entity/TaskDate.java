@@ -6,14 +6,14 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
-import java.time.LocalDateTime;
+import java.time.LocalDate;
 
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
 @Entity
-public class TaskDateTime {
+public class TaskDate {
 
     @Id
     @GeneratedValue(strategy= GenerationType.AUTO)
@@ -22,5 +22,5 @@ public class TaskDateTime {
     @ManyToOne
     private Task task;
 
-    private LocalDateTime dateTimeOfTask;
+    private LocalDate dateOfTask;
 }
