@@ -27,7 +27,7 @@ public class Task {
     private Set<ScheduledTaskData> scheduledTaskData;
 
     @OneToMany
-    private Set<TaskDateTime> taskDateTimes;
+    private Set<TaskDate> taskDates;
 
     private String name;
 
