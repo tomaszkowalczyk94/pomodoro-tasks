@@ -4,6 +4,7 @@ import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.experimental.FieldDefaults;
 import org.springframework.stereotype.Service;
+import org.tomaszkowalczyk94.pomodorotasksmanager.core.entity.ScheduledTaskData;
 import org.tomaszkowalczyk94.pomodorotasksmanager.core.repository.ScheduledTaskDataRepository;
 import org.tomaszkowalczyk94.pomodorotasksmanager.core.repository.TaskDateRepository;
 
@@ -20,6 +21,8 @@ class CalendarImpl implements Calendar {
 
     @Override
     public CalendarDay getDay(LocalDate day) {
+        Iterable<ScheduledTaskData> all = scheduledTaskDataRepository.findAll();
+
         throw new UnsupportedOperationException("Not implemented yet");
     }
 
