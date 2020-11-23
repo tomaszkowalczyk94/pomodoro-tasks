@@ -25,7 +25,7 @@ public class ScheduledTaskData {
     @ManyToOne
     private Task task;
 
+    String dayOfTheWeek;
     String dayOfTheMonth;
     String month;
-    String dayOfTheWeek;
 }
