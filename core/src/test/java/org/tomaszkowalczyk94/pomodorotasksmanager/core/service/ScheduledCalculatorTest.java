@@ -4,9 +4,11 @@ import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
 
+import java.time.DayOfWeek;
 import java.time.LocalDate;
 import java.util.stream.Stream;
 
+import static java.time.DayOfWeek.*;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.junit.jupiter.params.provider.Arguments.arguments;
@@ -24,7 +26,9 @@ class ScheduledCalculatorTest {
 
         //then
         assertThat(actual)
+                .withFailMessage(String.format("fail for date: %s and params %s %s %s", date.toString(), dayOfTheWeek, dayOfTheMonth, month))
                 .isEqualTo(expected);
+
     }
 
     @ParameterizedTest
@@ -41,20 +45,25 @@ class ScheduledCalculatorTest {
 
     static Stream<Arguments> isScheduledForProvider() {
         return Stream.of(
-                arguments(LocalDate.parse("2020-11-01"), "01", "11", "2020", true),
                 arguments(LocalDate.parse("2020-11-01"), "*", "*", "*", true),
 
-                arguments(LocalDate.parse("2020-11-01"), "01", "*", "*", true),
-                arguments(LocalDate.parse("2020-11-01"), "02", "*", "*", false),
-                arguments(LocalDate.parse("2020-11-01"), "02", "11", "2020", false),
+                arguments(LocalDate.parse("2020-11-01"), toString(SUNDAY), "1", "11", true),
+                arguments(LocalDate.parse("2020-11-01"), "*", "1", "11", true),
+                arguments(LocalDate.parse("2020-11-01"), toString(MONDAY), "1", "11", false), //its not monday!
 
-                arguments(LocalDate.parse("2020-11-01"), "*", "11", "*", true),
-                arguments(LocalDate.parse("2020-11-01"), "*", "07", "*", false),
-                arguments(LocalDate.parse("2020-11-01"), "01", "07", "2020", false),
+                arguments(LocalDate.parse("2021-05-31"), toString(MONDAY), "31", "05", true),
+                arguments(LocalDate.parse("2021-05-31"), toString(MONDAY), "30", "05", false),
+                arguments(LocalDate.parse("2021-05-31"), toString(MONDAY), "*", "05", true),
 
-                arguments(LocalDate.parse("2020-11-01"), "*", "*", "2020", true),
-                arguments(LocalDate.parse("2020-11-01"), "*", "*", "1990", false),
-                arguments(LocalDate.parse("2020-11-01"), "*", "*", "2111", false)
+                arguments(LocalDate.parse("1990-01-01"), "*", "*", "01", true),
+                arguments(LocalDate.parse("1990-01-01"), "*", "*", "09", false),
+
+                arguments(LocalDate.parse("2020-11-02"), toString(MONDAY), "*", "*", true),
+                arguments(LocalDate.parse("2020-11-03"), toString(MONDAY), "*", "*", false), // not monday
+                arguments(LocalDate.parse("2020-11-09"), toString(MONDAY), "*", "*", true),
+                arguments(LocalDate.parse("2020-11-11"), toString(MONDAY), "*", "*", false), // not monday
+                arguments(LocalDate.parse("2020-11-16"), toString(MONDAY), "*", "*", true),
+                arguments(LocalDate.parse("2020-11-23"), toString(MONDAY), "*", "*", true)
         );
     }
 
@@ -79,5 +88,10 @@ class ScheduledCalculatorTest {
                 arguments("1", "-", "1"),
                 arguments("1", "1", "-")
         );
+    }
+
+    static String toString(DayOfWeek dayOfWeek) {
+        return String.valueOf(dayOfWeek.getValue());
+
     }
 }
