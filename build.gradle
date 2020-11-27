@@ -1,5 +1,6 @@
 plugins {
     id 'java'
+    id "org.sonarqube" version "3.0"
 }
 
 group 'org.tomaszkowalczyk94'
@@ -21,4 +22,10 @@ allprojects {
 
 }
 
-
+sonarqube {
+  properties {
+    property "sonar.projectKey", "tomaszkowalczyk94_pomodoro-tasks-manager"
+    property "sonar.organization", "tomaszkowalczyk94"
+    property "sonar.host.url", "https://sonarcloud.io"
+  }
+}
