@@ -4,14 +4,16 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.tomaszkowalczyk94.pomodorotasksmanager.core.entity.dsl.fun.TaskDateBuilder;
 
 import javax.persistence.*;
 import java.time.LocalDate;
+import java.util.function.Consumer;
 
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-@Builder
+@Builder(builderClassName = "SimpleBuilder")
 @Entity
 public class TaskDate {
 
@@ -22,5 +24,9 @@ public class TaskDate {
     @ManyToOne
     private Task task;
 
-    private LocalDate dateOfTask;
+    private LocalDate date;
+
+    public static TaskDate build(Consumer<TaskDateBuilder> consumer) {
+        return TaskDateBuilder.build(consumer);
+    }
 }
