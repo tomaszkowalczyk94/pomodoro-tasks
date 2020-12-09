@@ -8,6 +8,6 @@ import java.util.List;
 
 public interface TaskDateRepository extends CrudRepository<TaskDate, Long> {
 
-    List<TaskDate> getByDateOfTask(LocalDate date);
+    List<TaskDate> getByDate(LocalDate date);
 
 }
