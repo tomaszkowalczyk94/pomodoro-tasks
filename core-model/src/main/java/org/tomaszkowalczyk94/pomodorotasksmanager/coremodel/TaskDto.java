@@ -3,6 +3,7 @@ package org.tomaszkowalczyk94.pomodorotasksmanager.coremodel;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
 import java.time.Duration;
+import java.util.HashSet;
 import java.util.Set;
 
 @Getter
@@ -15,7 +16,8 @@ public class TaskDto {
 
     Long id;
 
-    private Set<DoneTaskDataDto> doneTaskInfo;
+    @Builder.Default
+    private Set<DoneTaskDataDto> doneTaskInfo = new HashSet<>();
 
     String name;
 
